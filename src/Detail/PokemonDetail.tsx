@@ -7,6 +7,7 @@ import PokeMarkChip from "../Common/PokeMarkChip";
 import { fetchPokemonDetail, PokemonDetailType } from "../Service/pokemonService";
 import { RootState } from "../Store";
 
+
 const PokemonDetail = () => {
   const { name } = useParams();
   const imageType = useSelector((state: RootState) => state.imageType.type)

@@ -30,8 +30,17 @@ const pokemonsSlice = createSlice({
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(fetchPokemons.fulfilled, (state, action:PayloadAction<PokemonListResponseType>) => {
-      // Add user to the state array
-      console.log(action.payload.results)
+      if (state.pokemons.results.length > 0) {
+        state.pokemons = {
+          ...action.payload,
+          results: [...state.pokemons.results, ...action.payload.results]
+        }
+      }
+      else {
+        state.pokemons = action.payload;
+      }
+      
+      state.pokemons = action.payload;
     })
   },
 })

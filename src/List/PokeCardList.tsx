@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-import { fetchPokemonsAPI, PokemonListResponseType } from '../Service/pokemonService';
-import { useAppDispatch } from '../Store';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../Store';
 import { fetchPokemons } from '../Store/pokemonsSlice';
 import PokeCard from './PokeCard';
 
@@ -10,11 +10,7 @@ import PokeCard from './PokeCard';
 const PokeCardList = () => {
     const dispatch = useAppDispatch();
     // 불러온 카드를 useState에 저장한다
-    const [pokemons, setPokemons] = useState<PokemonListResponseType>({
-        count: 0,
-        next: '',
-        results: []
-    });
+    const { pokemons } = useSelector((state: RootState) => state.pokemons)
     
     // 무한 스크롤 기능 구현을 위헤 useInfiniteScroll hook을 사용한다
     const [infiniteScroll] = useInfiniteScroll({
@@ -24,14 +20,14 @@ const PokeCardList = () => {
         hasNextPage: pokemons.next !== '',
         // 더 불러올 데이터를 fetch한다. useState의 set함수를 통해 기존의 데이터에 덧붙인다.
         onLoadMore: async () => {
-            const morePokemons = await fetchPokemonsAPI(pokemons.next);
+            // const morePokemons = await fetchPokemonsAPI(pokemons.next);
 
             // morePokemons에서 들어온 객체의 요소를 pokemons 상태에 업데이트 해주고, 포켓몬의 정보가 들어있는
             // results 요소에는 기존 정보를 더해서 새로운 정보를 붙여준다.
-            setPokemons({
-                ...morePokemons,
-                results: [...pokemons.results, ...morePokemons.results]
-            })
+            // setPokemons({
+            //     ...morePokemons,
+            //     results: [...pokemons.results, ...morePokemons.results]
+            // })
         },
         // 무한 스크롤 기능을 비활성화할지 여부
         disabled: false,
