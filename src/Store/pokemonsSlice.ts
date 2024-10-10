@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchPokemonsAPI, PokemonListResponseType } from '../Service/pokemonService'
 
-// First, create the thunk
-const fetchPokemons = createAsyncThunk(
+// Thunk Creation
+export const fetchPokemons = createAsyncThunk(
   'pokemon/fetchPokemons',
   async (nextUrl?:string) => {
     const response = await fetchPokemonsAPI(nextUrl)
@@ -23,20 +23,16 @@ const initialState = {
 } as PokemonsState
 
 // Then, handle actions in your reducers:
-const usersSlice = createSlice({
-  name: 'users',
+const pokemonsSlice = createSlice({
+  name: 'pokemons',
   initialState,
-  reducers: {
-    // standard reducer logic, with auto-generated action types per reducer
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchUserById.fulfilled, (state, action) => {
+    builder.addCase(fetchPokemons.fulfilled, (state, action:PayloadAction<PokemonListResponseType>) => {
       // Add user to the state array
-      state.entities.push(action.payload)
+      console.log(action.payload.results)
     })
   },
 })
-
-// Later, dispatch the thunk as needed in the app
-dispatch(fetchUserById(123))
+export const pokemonsReducer = pokemonsSlice.reducer

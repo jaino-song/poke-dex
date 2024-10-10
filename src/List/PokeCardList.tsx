@@ -2,10 +2,13 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { fetchPokemonsAPI, PokemonListResponseType } from '../Service/pokemonService';
+import { useAppDispatch } from '../Store';
+import { fetchPokemons } from '../Store/pokemonsSlice';
 import PokeCard from './PokeCard';
 
 // 카드 리스트를 fetchPokemons 함수로 불러오고 생성한다
 const PokeCardList = () => {
+    const dispatch = useAppDispatch();
     // 불러온 카드를 useState에 저장한다
     const [pokemons, setPokemons] = useState<PokemonListResponseType>({
         count: 0,
@@ -38,12 +41,13 @@ const PokeCardList = () => {
 
     // 외부 API를 사용하는 fetchPokemons 함수를 사용하기 위해 useEffect를 사용
     useEffect(() => {
+        dispatch(fetchPokemons())
         // fetchPokemons를 비동기로 사용하기 위해 즉시실행 함수 안에 async await을 사용
-        (async () => {
-            const pokemons = await fetchPokemons();
-            // 가져온 데이터를 setPokemons로 useState에 업데이트한다.
-            setPokemons(pokemons);
-        })()
+        // (async () => {
+        //     const pokemons = await fetchPokemonsAPI();
+        //     // 가져온 데이터를 setPokemons로 useState에 업데이트한다.
+        //     setPokemons(pokemons); 
+        // })()
     }, [])
 
     return (
