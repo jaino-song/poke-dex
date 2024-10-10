@@ -39,8 +39,6 @@ const pokemonsSlice = createSlice({
       else {
         state.pokemons = action.payload;
       }
-      
-      state.pokemons = action.payload;
     })
   },
 })

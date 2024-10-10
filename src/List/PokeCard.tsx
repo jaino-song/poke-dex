@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useIntersectionObserver } from "react-intersection-observer-hook";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PokeImageSkeleton } from "../Common/PokeImageSkeleton";
 import PokeMarkChip from "../Common/PokeMarkChip"; // Import the PokeMarkChip component
 import PokeNameChip from "../Common/PokeNameChip"; // Import the PokeNameChip component
-import { fetchPokemonDetail, PokemonDetailType } from "../Service/pokemonService";
-import { RootState } from "../Store";
+import { RootState, useAppDispatch } from "../Store";
+import { fetchPokemonDetail } from "../Store/pokemonDetailSlice";
 
 // PokeCard로 가는 Prop의 타입을 지정해준다.
 interface PokeCardProps {
@@ -16,6 +16,8 @@ interface PokeCardProps {
 
 // 포켓몬 이름 Prop을 받아서 포켓몬 카드를 만들어주는 컴포넌트
 const PokeCard = (props:PokeCardProps) => {
+  const dispatch = useAppDispatch();
+  const { pokemonDetails } = useSelector((state: RootState) => state.pokemonDetail)
   // 카드를 클릭했을 때 다른 루트로 연결해주는 Hook
   const navigate =  useNavigate();
   // 스토어 안에 있는 상태를 선택한다.
@@ -25,7 +27,7 @@ const PokeCard = (props:PokeCardProps) => {
   // 카드가 Viewport에 있는지 확인함
   const isVisible = entry && entry.isIntersecting;
   // 포켓몬의 상태를 관리하는 state
-  const [pokemon, setPokemon] = useState<PokemonDetailType | null>(null)
+  const pokemon = pokemonDetails[props.name];
   // 카드를 클릭했을 때 동작 처리
   const handleClick = () => {
     navigate(`/pokemon/${props.name}`);
@@ -37,13 +39,9 @@ const PokeCard = (props:PokeCardProps) => {
     if(!isVisible) {
       return;
     }
-    // API fetch로 정보를 불러오고, Pokemon 상태에 업데이트 한다
-    (async () => {
-      const detail = await fetchPokemonDetail(props.name);
-      setPokemon(detail);
-    })()
+    dispatch(fetchPokemonDetail(props.name))
   // name이나 viewport에 보이는 상태가 바뀔 때 useEffect를 실행한다.
-  }, [props.name, isVisible])
+  }, [dispatch, props.name, isVisible])
 
   if (!pokemon) {
     return (

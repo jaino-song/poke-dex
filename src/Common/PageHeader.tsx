@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
+import { ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { POKEMON_IMAGE_TYPE } from "../Constant";
+import { POKEMON_IMAGE_TYPE } from "../Constants";
 import { RootState, useAppDispatch } from "../Store";
-import { changeImageType, PokemonImageKeyType } from "../Store/imageTypeSlice";
-import { ChangeEvent } from "react";
+import { changeImageType, PokemonImageKeyType } from "../Store/ImageTypeSlice";
 
 // 사이트의 헤더 컴포넌트
 const PageHeader = () => {

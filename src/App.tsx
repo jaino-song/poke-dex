@@ -1,8 +1,8 @@
+import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import PageHeader from "./Common/PageHeader"
 import PageNavigator from "./PageNavigator"
-import { Provider } from "react-redux"
-import store from "./Store/index.ts"
+import { store } from "./Store/index.ts"
 
 function App() {
 
